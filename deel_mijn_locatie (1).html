@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deel mijn locatie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f4f8;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 16px;
+            word-wrap: break-word;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📍 Deel mijn locatie</h1>
+    <p>Druk op de knop hieronder om je huidige locatie te delen.</p>
+    <button onclick="getLocation()">Deel mijn locatie</button>
+    <div id="output"></div>
+
+    <script>
+        function getLocation() {
+            const output = document.getElementById("output");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const link = `https://www.google.com/maps?q=${lat},${lon}`;
+                    output.innerHTML = `
+                        <p><strong>Jouw locatie:</strong></p>
+                        <input type="text" value="${link}" readonly onclick="this.select()">
+                        <p><a href="${link}" target="_blank">Bekijk op Google Maps</a></p>
+                    `;
+                }, function(error) {
+                    output.innerHTML = "<p>Kon locatie niet ophalen. Toestemming geweigerd of fout opgetreden.</p>";
+                });
+            } else {
+                output.innerHTML = "<p>Geolocatie wordt niet ondersteund door deze browser.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
